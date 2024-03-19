@@ -21,8 +21,27 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/{shorturl}", redirect).Methods("GET")
+	r.HandleFunc("/", showAll).Methods("GET")
 	r.HandleFunc("/", shorten).Methods("POST")
 	http.ListenAndServe(":8080", r)
+}
+
+func showAll(w http.ResponseWriter, r *http.Request) {
+	keys, err := client.Keys("*").Result()
+	if err != nil {
+		http.Error(w, "Error getting keys", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(keys)
+
+	for _, key := range keys {
+		val, err := client.Get(key).Result()
+		if err != nil {
+			http.Error(w, "Error getting value for key "+key, http.StatusInternalServerError)
+			return
+		}
+		fmt.Fprintf(w, "%s: %s\n", key, val)
+	}
 }
 
 func redirect(w http.ResponseWriter, r *http.Request) {
