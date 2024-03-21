@@ -1,0 +1,39 @@
+<div class="container p-4 bg-light rounded shadow">
+    <h1 class="mb-4 text-primary">Pastebin</h1>
+  
+    <h2 class="mb-2 text-info">Total Links: {{ countLink }}</h2>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Key</th>
+          <th scope="col">Value</th>
+          <th scope="col">Stats</th>
+          <th scope="col">Clicks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let link of linkList">
+          <td><a href="http://localhost:8080/{{ link.key }}" target="_blank">{{ link.key }}</a></td>
+          <td>{{ link.value }}</td>
+          <td>
+            <button (click)="stats(link.key)" class="btn btn-info">Get Stats</button>
+          </td>
+          <td>{{ link?.click }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form (ngSubmit)="shorten(newLink)" class="mt-4">
+        <div class="mb-3">
+          <label for="url" class="form-label">URL</label>
+          <input type="text" [(ngModel)]="newLink" name="url" id="url" class="form-control" placeholder="Enter URL">
+        </div>
+        <button type="submit" class="btn btn-primary">Shorten</button>
+      </form>
+    
+      <div *ngIf="shortURL" class="mt-4">
+        <h3 class="text-success">Short URL:</h3>
+        <p><a href="{{ shortURL }}" target="_blank">{{ shortURL }}</a></p>
+      </div>
+  </div>

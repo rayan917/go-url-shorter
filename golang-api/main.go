@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-redis/redis"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -21,5 +22,11 @@ func main() {
 	r.HandleFunc("/", showAll).Methods("GET")
 	r.HandleFunc("/", shorten).Methods("POST")
 	r.HandleFunc("/{shorturl}/stats", stats).Methods("GET")
-	http.ListenAndServe(":8080", r)
+
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+
+	http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(r))
+
 }
