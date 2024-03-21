@@ -1,0 +1,19 @@
+version: '3'
+services:
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
+  golang-api:
+    build:
+      context: ./golang-api
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+volumes:
+  redis-data:
+    driver: local
