@@ -49,7 +49,7 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	client.Incr("count:" + shorturl)
-	http.Redirect(w, r, url, http.StatusSeeOther)
+	http.Redirect(w, r, url, http.StatusFound)
 }
 
 func shorten(w http.ResponseWriter, r *http.Request) {
@@ -78,6 +78,7 @@ func shorten(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(result)
 }
 

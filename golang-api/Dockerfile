@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Installez les dépendances
-RUN go get
+RUN go get -t url-short
 
 RUN go build -o bin .
 
