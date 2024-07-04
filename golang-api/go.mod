@@ -27,5 +27,4 @@ require (
 
 require (
 	github.com/alicebob/miniredis/v2 v2.33.0
-	github.com/stretchr/testify/assert v1.9.0
 )
